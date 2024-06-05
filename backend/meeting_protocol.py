@@ -1,7 +1,6 @@
 from django.db import models
 import uuid
 import hashlib
-import call_record
 import meeting_call
 
 class meeting_protocol(models.Model):
@@ -9,7 +8,7 @@ class meeting_protocol(models.Model):
     sys_created_on = models.DateTimeField(auto_now_add=True)
     sys_id = models.CharField()
     content = models.JSONField()
-    refers_to = models.ManyToManyField(call_record, meeting_call)
+    meeting_call = models.ForeignKey(meeting_call, on_delete=models.CASCADE, related_name='meeting_protocol')
 
 
 
