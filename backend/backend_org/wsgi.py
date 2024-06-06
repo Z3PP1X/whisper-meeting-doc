@@ -1,1 +1,0 @@
-##mysite/wsgi.py: An entry-point for WSGI-compatible web servers to serve your project.##
