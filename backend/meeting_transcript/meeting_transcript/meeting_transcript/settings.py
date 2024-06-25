@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,3 +129,5 @@ CORS_ALLOWED_ORIGINS = [
 # Or if you want to allow all origins (not recommended for production):
 # CORS_ALLOW_ALL_ORIGINS = True
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = r'C:\Entwicklung GI\unmoegliches_projekt\backend\meeting_transcript\media'

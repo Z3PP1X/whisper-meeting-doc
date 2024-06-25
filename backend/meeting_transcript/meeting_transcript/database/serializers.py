@@ -6,6 +6,11 @@ class MeetingCallSerializer(serializers.ModelSerializer):
         model = MeetingCall
         fields = '__all__'
 
+class MeetingCallCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MeetingCall
+        fields = ['sys_id']
+
 class MeetingProtocolSerializer(serializers.ModelSerializer):
     class Meta:
         model = MeetingProtocol

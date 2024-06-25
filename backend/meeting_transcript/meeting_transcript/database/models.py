@@ -45,8 +45,7 @@ class CallRecord(models.Model):
     sys_created_on = models.DateTimeField(auto_now_add=True)
     payload = models.FileField(upload_to='audio/')
     transcription = models.TextField()
-    meeting_call = models.ForeignKey(MeetingCall, on_delete=models.CASCADE, related_name='call_records')
-    meeting_protocol = models.ForeignKey(MeetingProtocol, on_delete=models.CASCADE, related_name='call_records')
+    meeting_call = models.ForeignKey(MeetingCall, on_delete=models.CASCADE, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.sys_id:

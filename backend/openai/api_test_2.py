@@ -1,18 +1,34 @@
 from google.cloud import speech
 from google.oauth2 import service_account
 from pydub import AudioSegment
+from pydub.exceptions import CouldntDecodeError  # Import the CouldntDecodeError class
 import io
 import os
+import subprocess
 
-def transkribiere_m4a_audio(dateipfad, api_key_file):
+def konvertiere_datei(dateipfad, zielpfad):
+    try:
+        subprocess.check_call(['ffmpeg', '-i', dateipfad, zielpfad])
+        print(f"Datei erfolgreich konvertiert: {zielpfad}")
+    except subprocess.CalledProcessError as e:
+        print(f"Fehler bei der Konvertierung der Datei: {e}")
+
+def transkribiere_audio(dateipfad, api_key_file):
     # Überprüfen, ob die JSON-Datei existiert
     if not os.path.isfile(api_key_file):
         raise FileNotFoundError(f"Die Datei {api_key_file} wurde nicht gefunden.")
     
-    # Konvertiere M4A in ein unterstütztes Format (z.B. WAV) und stelle sicher, dass es mono ist
-    audio = AudioSegment.from_file(dateipfad, format="m4a")
+    # Überprüfen, ob die Audiodatei im richtigen Format vorliegt
+    try:
+        audio = AudioSegment.from_file(dateipfad, format="wav")
+    except CouldntDecodeError:
+        # Datei konvertieren, wenn sie nicht im WAV-Format vorliegt
+        wav_dateipfad = dateipfad.replace(".wav", "_converted.wav")
+        konvertiere_datei(dateipfad, wav_dateipfad)
+        audio = AudioSegment.from_file(wav_dateipfad, format="wav")
+
     audio = audio.set_channels(1)  # Konvertiere zu mono
-    wav_dateipfad = dateipfad.replace(".m4a", ".wav")
+    wav_dateipfad = dateipfad.replace(".wav", "_mono.wav")
     audio.export(wav_dateipfad, format="wav")
     
     # Ermitteln der Abtastrate der konvertierten Datei
@@ -40,9 +56,8 @@ def transkribiere_m4a_audio(dateipfad, api_key_file):
     for result in response.results:
         print("Transkript: {}".format(result.alternatives[0].transcript))
 
-# Pfad zur API-Schlüssel-Datei und zur M4A-Test-Audiodatei
+# Pfad zur API-Schlüssel-Datei und zur Audiodatei
 api_key_file = r"C:\Entwicklung GI\unmoegliches_projekt\backend\openai\business-idea-427008-cbb158d6b32d.json"
-dateipfad = r"C:\Entwicklung GI\unmoegliches_projekt\backend\openai\Aufzeichnung.m4a"
+dateipfad = r"C:\Entwicklung GI\unmoegliches_projekt\backend\meeting_transcript\media\audio\audio.wav"
 
-transkribiere_m4a_audio(dateipfad, api_key_file)
-
+transkribiere_audio(dateipfad, api_key_file)

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-meeting',
@@ -15,7 +16,7 @@ export class RegisterMeetingComponent {
 
   meetingForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router) {
     this.meetingForm = this.fb.group({
       attendees: ['', Validators.required],
       meeting_date: ['', Validators.required],
@@ -55,6 +56,7 @@ export class RegisterMeetingComponent {
             console.log('Meeting Call created:', response);
             const sysId = response.sys_id;
             console.log('Meeting Call sys_id:', sysId);
+            this.router.navigate(['/audio-recorder', sysId]);
           },
           error: (error) => {
             console.error('Error creating Meeting Call:', error);
