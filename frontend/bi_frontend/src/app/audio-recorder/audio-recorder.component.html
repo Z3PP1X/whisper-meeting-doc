@@ -1,1 +1,4 @@
-<button (mousedown)="startRecording()" (mouseup)="stopRecording()">🎤</button>
+<button (click)="toggleRecording()">
+    {{ isRecording ? '⏹️ Stop' : '🎤 Start' }}
+  </button>
+  

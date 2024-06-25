@@ -1,14 +1,17 @@
-button {
-    font-size: 24px;
-    padding: 10px;
+  button {
+    font-size: 36px;
+    padding: 15px;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: blue; /* Set initial background color to blue */
     color: white;
     border: none;
     cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-  
-  button:active {
-    background-color: #0056b3;
+
+  button.clicked {
+    background-color: red; /* Set background color to red when button is clicked */
   }
-  

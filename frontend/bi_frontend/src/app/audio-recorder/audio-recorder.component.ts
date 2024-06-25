@@ -14,6 +14,7 @@ export class AudioRecorderComponent implements OnInit {
   private mediaRecorder: any;
   private audioChunks: any[] = [];
   sysId: string = '';
+  isRecording: boolean = false;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) { }
 
@@ -22,11 +23,21 @@ export class AudioRecorderComponent implements OnInit {
     console.log('Received sys_id:', this.sysId);
   }
 
+  toggleRecording() {
+    if (this.isRecording) {
+      this.stopRecording();
+    } else {
+      this.startRecording();
+    }
+  }
+
   startRecording() {
+    this.audioChunks = [];
     navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
       this.mediaRecorder = new MediaRecorder(stream);
       this.mediaRecorder.start();
+      this.isRecording = true;
 
       this.mediaRecorder.addEventListener("dataavailable", (event: any) => {
         this.audioChunks.push(event.data);
@@ -39,12 +50,16 @@ export class AudioRecorderComponent implements OnInit {
         audio.play();
 
         this.saveAudio(audioBlob);
+        this.isRecording = false;
       });
     });
   }
 
   stopRecording() {
-    this.mediaRecorder.stop();
+    if (this.mediaRecorder && this.isRecording) {
+      this.mediaRecorder.stop();
+      this.isRecording = false;
+    }
   }
 
   saveAudio(blob: Blob) {
@@ -54,7 +69,7 @@ export class AudioRecorderComponent implements OnInit {
     formData.append('call_id', 'example-call-id');  
     formData.append('caller_id', 'example-caller-id');
     formData.append('transcription', 'Auto-generated transcription placeholder');
-
+    
 
     this.apiService.createCallRecord(formData).subscribe({
       next: response => {
