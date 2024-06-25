@@ -1,0 +1,31 @@
+<div class="container">
+  <h2>Register Meeting</h2>
+  <form [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="attendees">Attendees (comma-separated emails)</label>
+      <input type="text" id="attendees" class="form-control" formControlName="attendees">
+    </div>
+
+    <div class="form-group">
+      <label for="meeting_date">Meeting Date</label>
+      <input type="datetime-local" id="meeting_date" class="form-control" formControlName="meeting_date">
+    </div>
+
+    <div class="form-group">
+      <label for="meeting_topic">Meeting Topic</label>
+      <input type="text" id="meeting_topic" class="form-control" formControlName="meeting_topic">
+    </div>
+
+    <div class="form-group">
+      <label for="meeting_start_time">Meeting Start Time</label>
+      <input type="datetime-local" id="meeting_start_time" class="form-control" formControlName="meeting_start_time">
+    </div>
+
+    <div class="form-group">
+      <label for="meeting_end_time">Meeting End Time</label>
+      <input type="datetime-local" id="meeting_end_time" class="form-control" formControlName="meeting_end_time">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="meetingForm.invalid">Register Meeting</button>
+  </form>
+</div>
