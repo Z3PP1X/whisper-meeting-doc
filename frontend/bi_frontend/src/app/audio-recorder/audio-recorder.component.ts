@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../api.service';
 
@@ -16,7 +16,7 @@ export class AudioRecorderComponent implements OnInit {
   sysId: string = '';
   isRecording: boolean = false;
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.sysId = this.route.snapshot.paramMap.get('sysId')!;
@@ -90,6 +90,7 @@ export class AudioRecorderComponent implements OnInit {
     this.apiService.createMeetingProtocol(formData).subscribe({
       next: response => {
         console.log('Meeting protocol is being generated...', response);
+        this.router.navigate(['/meeting-protocol', response.id]);
       },
       error: error => {
         console.error('Error generating meeting protocol:', error);
