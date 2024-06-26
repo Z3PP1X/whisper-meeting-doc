@@ -80,4 +80,20 @@ export class AudioRecorderComponent implements OnInit {
       }
     });
   }
+
+  generateRecord() {
+
+    const formData = new FormData();
+    formData.append('content', JSON.stringify({ "text": "Meeting protocol content placeholder" }));
+
+
+    this.apiService.createMeetingProtocol(formData).subscribe({
+      next: response => {
+        console.log('Meeting protocol is being generated...', response);
+      },
+      error: error => {
+        console.error('Error generating meeting protocol:', error);
+      }
+    });
+  }
 }

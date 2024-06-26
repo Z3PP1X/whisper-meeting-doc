@@ -15,3 +15,9 @@
   button.clicked {
     background-color: red; /* Set background color to red when button is clicked */
   }
+
+  button.second-button {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+  }
